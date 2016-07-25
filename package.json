@@ -39,6 +39,7 @@
     "ng-table": "^1.0.0",
     "path": "^0.12.7",
     "run-sequence": "^1.2.1",
+    "typescript": "^1.8.10",
     "vinyl-named": "^1.1.0",
     "webpack": "^1.13.1",
     "yargs": "^4.8.1"

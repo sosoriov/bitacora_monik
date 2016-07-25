@@ -46,6 +46,7 @@ angular.module('app')
       });
 
       $scope.currentPattern['selectedTrade'] = '';
+      $scope.currentPattern['generalComments'] = '';
 
     }
 

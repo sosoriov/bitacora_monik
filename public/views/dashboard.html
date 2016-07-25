@@ -1,12 +1,9 @@
-<h2>Playbook</h2>
-
 <div class="page-content">
     <div class="panel" ng-controller="DashboardCtrl">
         <div class="panel-body container-fluid">
             <!--{{ formData }}-->
 
             <!--{{ currentPattern }}-->
-            {{currentOriginalPattern}}
             <div class="example-wrap">
                 <div class="example">
                     <form name="operationForm" novalidate class="simple-form" ng-submit="submit()">
@@ -35,101 +32,105 @@
 
                         </div>
 
-                        <div class="col-lg-9">
 
-                            <div class="row">
-                                <div class="col-lg-5 col-sm-5">
-                                    <h3>Validation</h3>
-                                    <div class="input-group">
-                                        <div>
-                                            <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.validation">
-                                                <div ng-if="display(item)">
-                                                    <input type="checkbox" name="validation-name" ng-model="item.value" />
-                                                    <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-lg-5 col-sm-5">
-                                    <h3>Confirmation</h3>
-                                    <div class="input-group">
-                                        <div>
-                                            <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.confirmation">
-                                                <div ng-if="display(item)">
-                                                    <input type="checkbox" name="validation-name" ng-model="item.value" />
-                                                    <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
-                                                </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-4">
+                                <h3>Validation</h3>
+                                <div class="input-group">
+                                    <div>
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.validation">
+                                            <div ng-if="display(item)">
+                                                <input type="checkbox" name="validation-name" ng-model="item.value" />
+                                                <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-lg-5 col-sm-5">
-                                    <h3>Zone</h3>
-                                    <div class="input-group">
-                                        <div>
-                                            <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.zone">
-                                                <div ng-if="display(item)">
-                                                    <input type="checkbox" name="validation-name" ng-model="item.value" />
-                                                    <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="col-lg-5 col-sm-5">
-                                    <h3>Adhesion</h3>
-                                    <div class="input-group">
-                                        <div>
-                                            <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.Adhesion">
-                                                <div ng-if="display(item)">
-                                                    <input type="checkbox" name="validation-name" ng-model="item.value" />
-                                                    <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
-                                                </div>
+                            <div class="col-lg-4 col-sm-4">
+                                <h3>Confirmation</h3>
+                                <div class="input-group">
+                                    <div>
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.confirmation">
+                                            <div ng-if="display(item)">
+                                                <input type="checkbox" name="validation-name" ng-model="item.value" />
+                                                <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-lg-5 col-sm-5">
-                                    <h3>Stop Loss</h3>
-                                    <div class="input-group">
-                                        <div>
-                                            <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern['Stop Loss']">
-                                                <div ng-if="display(item)">
-                                                    <input type="checkbox" name="validation-name" ng-model="item.value" />
-                                                    <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
-                                                </div>
+                            <div class="col-lg-4 col-sm-4">
+                                <h3>Zone</h3>
+                                <div class="input-group">
+                                    <div>
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.zone">
+                                            <div ng-if="display(item)">
+                                                <input type="checkbox" name="validation-name" ng-model="item.value" />
+                                                <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="col-lg-5 col-sm-5">
-                                    <h3>Trailing Stop Loss</h3>
-                                    <div class="input-group">
-                                        <div>
-                                            <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern['Trailing Stop Loss']">
-                                                <div ng-if="display(item)">
-                                                    <input type="checkbox" name="validation-name" ng-model="item.value" />
-                                                    <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
-                                                </div>
+                        <hr class="clearing" />
+
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12">
+                                <h3>Probabilities</h3>
+                                <div class="col-lg-4 col-sm-4" ng-repeat="item in currentPattern.probabilities">
+                                    <div class="">
+                                        <div class="checkbox-custom checkbox-primary checkbox-comments">
+                                            <div ng-if="display(item)">
+                                                <input type="checkbox" name="validation-name" ng-model="item.value" />
+                                                <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
                                             </div>
                                         </div>
+                                        <textarea class="form-control my-comment2" id="inputPlaceholder" placeholder="comments" ng-model="item.comments" rows="3"
+                                            cols="20"> </textarea>
                                     </div>
                                 </div>
-
                             </div>
 
-                            <div class="col-lg-5 col-sm-5">
+                        </div>
+
+                        <hr class="clearing" />
+
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-4">
+                                <h3>Stop Loss</h3>
+                                <div class="input-group">
+                                    <div>
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern['Stop Loss']">
+                                            <div ng-if="display(item)">
+                                                <input type="checkbox" name="validation-name" ng-model="item.value" />
+                                                <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-sm-4">
+                                <h3>Trailing Stop Loss</h3>
+                                <div class="input-group">
+                                    <div>
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern['Trailing Stop Loss']">
+                                            <div ng-if="display(item)">
+                                                <input type="checkbox" name="validation-name" ng-model="item.value" />
+                                                <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-sm-4">
                                 <h3>Target</h3>
                                 <div class="input-group">
                                     <div>
@@ -142,24 +143,39 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
 
-                        <div class="col-lg-3 col-sm-3">
-                            <h3>Probabilities</h3>
-                            <div ng-repeat="item in currentPattern.probabilities">
+                        <hr class="clearing" />
+
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6">
+                                <h3>Adhesion</h3>
                                 <div class="input-group">
-                                    <div class="checkbox-custom checkbox-primary checkbox-comments">
-                                        <div ng-if="display(item)">
-                                            <input type="checkbox" name="validation-name" ng-model="item.value" />
-                                            <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
+                                    <div>
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.Adhesion">
+                                            <div ng-if="display(item)">
+                                                <input type="checkbox" name="validation-name" ng-model="item.value" />
+                                                <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <textarea class="form-control my-comment2" id="inputPlaceholder" placeholder="comments" ng-model="item.comments" rows="3"
-                                        cols="10"> </textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-sm-6">
+                                <h3>General Comments</h3>
+                                <div class="input-group9">
+                                    <textarea class="form-control" cols="10" rows="5" ng-model="currentPattern.generalComments"></textarea>
                                 </div>
                             </div>
                         </div>
+
+
+
+
+
+
+
 
                         <!--
                                 <div class="form-group">
