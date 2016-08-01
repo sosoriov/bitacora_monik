@@ -1507,7 +1507,19 @@ export const ALL_DATA = [
         "label": "Debajo del 61.8 de pulso",
         "value": false,
         "comments": "",
-        "class": ""
+        "class": "",
+        "Venta": false,
+        "Compra": true,
+        "Adhesion": false
+      },
+      {
+        "label": "Encima del 61.8 de panico",
+        "value": false,
+        "comments": "",
+        "class": "",
+        "Venta": true,
+        "Compra": false,
+        "Adhesion": false
       }
     ],
     "Trailing Stop Loss": [
@@ -1515,7 +1527,19 @@ export const ALL_DATA = [
         "label": "Debajo de 61.8 de pulso completo",
         "value": false,
         "comments": "",
-        "class": ""
+        "class": "",
+        "Venta": false,
+        "Compra": true,
+        "Adhesion": false
+      },
+      {
+        "label": "Encima de 61.8 de panico completo",
+        "value": false,
+        "comments": "",
+        "class": "",
+        "Venta": true,
+        "Compra": false,
+        "Adhesion": false
       }
     ],
     "Target": [
@@ -1835,7 +1859,19 @@ export const ALL_DATA = [
         "label": "Debajo del 61.8 de pulso",
         "value": false,
         "comments": "",
-        "class": ""
+        "class": "",
+        "Venta": false,
+        "Compra": true,
+        "Adhesion": false
+      },
+      {
+        "label": "Encima del 61.8 de panico",
+        "value": false,
+        "comments": "",
+        "class": "",
+        "Venta": true,
+        "Compra": false,
+        "Adhesion": false
       }
     ],
     "Trailing Stop Loss": [
@@ -1843,7 +1879,19 @@ export const ALL_DATA = [
         "label": "Debajo de 61.8 de pulso completo",
         "value": false,
         "comments": "",
-        "class": ""
+        "class": "",
+        "Venta": false,
+        "Compra": true,
+        "Adhesion": false
+      },
+      {
+        "label": "Encima de 61.8 de panico completo",
+        "value": false,
+        "comments": "",
+        "class": "",
+        "Venta": true,
+        "Compra": false,
+        "Adhesion": false
       }
     ],
     "Target": [
@@ -1974,7 +2022,7 @@ export const ALL_DATA = [
         "label": "Vela de 30min que recupera area",
         "value": false,
         "comments": "",
-        "class": "conditions-green"
+        "class": ""
       },
       {
         "label": "Vela que respeta EMA(21)",
