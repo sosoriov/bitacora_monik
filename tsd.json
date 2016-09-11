@@ -13,6 +13,15 @@
     },
     "angularjs/angular.d.ts": {
       "commit": "43449c604f997d75e917769c662e3d3b3fb2c0ae"
+    },
+    "rethinkdb/rethinkdb.d.ts": {
+      "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
+    },
+    "bluebird/bluebird.d.ts": {
+      "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
+    },
+    "node/node.d.ts": {
+      "commit": "67557f18a898462614ed14063a54ca33a1cfab12"
     }
   }
 }

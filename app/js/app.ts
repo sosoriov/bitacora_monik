@@ -10,11 +10,12 @@
  */
 
 angular
-    .module('app', ['ngAnimate', 'ngRoute', 'ngSanitize', 'ui.bootstrap'])
+    .module('app', ['ngAnimate', 'ngRoute', 'ngSanitize', 'ui.bootstrap', 'firebase', 'ngTable'])
     .config(function($routeProvider, $httpProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'views/dashboard.html',
+                controller: 'DashboardCtrl'
             })
             .otherwise({
                 redirectTo: '/'

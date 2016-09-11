@@ -1,17 +1,15 @@
 <div class="page-content">
-    <div class="panel" ng-controller="DashboardCtrl">
+    <div class="panel">
         <div class="panel-body container-fluid">
-            <!--{{ formData }}-->
 
-            <!--{{ currentPattern }}-->
             <div class="example-wrap">
                 <div class="example">
                     <form name="operationForm" novalidate class="simple-form" ng-submit="submit()">
                         <div class="form-group">
                             <h3>Pattern</h3>
                             <div>
-                                <div class="radio-custom radio-default radio-inline" ng-repeat="pattern in patterns">
-                                    <input type="radio" ng-change="findPattern('{{ pattern }}')" ng-model="formData.selectedPattern" value="{{ pattern }}" id="{{ pattern }}"
+                                <div class="radio-custom radio-default radio-inline" ng-repeat="(keyPattern, pattern) in patterns">
+                                    <input type="radio" ng-change="getAllPatternInfo('{{ keyPattern }}')" ng-model="formData.selectedPattern" value="{{ keyPattern }}" id="{{ keyPattern }}"
                                         name="{{ pattern }}" />
                                     <label for="{{ pattern }}">{{ pattern }}</label>
                                 </div>
@@ -23,8 +21,8 @@
                                 <button name="clean" ng-click="cleanPattern()" class="btn btn-warning pull-right">Clean Current Pattern</button>
                             </h3>
                             <div>
-                                <div class="radio-custom radio-default radio-inline" ng-repeat="item in currentPattern.trade">
-                                    <input type="radio" ng-model="currentPattern.selectedTrade" value="{{ item.label }}" id="{{ item.label }}" name="{{ item.label }}"
+                                <div class="radio-custom radio-default radio-inline" ng-repeat="item in currentTrades">
+                                    <input type="radio" ng-change="getSelectedPatternName(item.label)" ng-model="currentPattern.selectedTrade" value="{{ item.$id }}" id="{{ item.$id }}" name="{{ item.label }}"
                                     />
                                     <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
                                 </div>
@@ -38,7 +36,7 @@
                                 <h3>Validation</h3>
                                 <div class="input-group">
                                     <div>
-                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.validation">
+                                        <div name="validations" class="checkbox-custom checkbox-primary" ng-repeat="item in currentValidations">
                                             <div ng-if="display(item)">
                                                 <input type="checkbox" name="validation-name" ng-model="item.value" />
                                                 <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
@@ -53,7 +51,7 @@
                                 <h3>Confirmation</h3>
                                 <div class="input-group">
                                     <div>
-                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.confirmation">
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentConfirmations">
                                             <div ng-if="display(item)">
                                                 <input type="checkbox" name="validation-name" ng-model="item.value" />
                                                 <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
@@ -67,7 +65,7 @@
                                 <h3>Zone</h3>
                                 <div class="input-group">
                                     <div>
-                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.zone">
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentZones">
                                             <div ng-if="display(item)">
                                                 <input type="checkbox" name="validation-name" ng-model="item.value" />
                                                 <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
@@ -83,16 +81,15 @@
                         <div class="row">
                             <div class="col-lg-12 col-sm-12">
                                 <h3>Probabilities</h3>
-                                <div class="col-lg-4 col-sm-4" ng-repeat="item in currentPattern.probabilities">
-                                    <div class="">
+                                <div class="col-lg-4 col-sm-4" ng-repeat="item in currentProb">
+                                    <div ng-if="display(item)" class="">
                                         <div class="checkbox-custom checkbox-primary checkbox-comments">
-                                            <div ng-if="display(item)">
+                                            <div >
                                                 <input type="checkbox" name="validation-name" ng-model="item.value" />
                                                 <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
                                             </div>
                                         </div>
-                                        <textarea class="form-control my-comment2" id="inputPlaceholder" placeholder="comments" ng-model="item.comments" rows="3"
-                                            cols="20"> </textarea>
+                                        <textarea class="form-control my-comment2" id="inputPlaceholder" placeholder="comments" ng-model="item.comments" rows="3" cols="20"> </textarea>
                                     </div>
                                 </div>
                             </div>
@@ -106,7 +103,7 @@
                                 <h3>Stop Loss</h3>
                                 <div class="input-group">
                                     <div>
-                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern['Stop Loss']">
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentStopLoss">
                                             <div ng-if="display(item)">
                                                 <input type="checkbox" name="validation-name" ng-model="item.value" />
                                                 <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
@@ -120,7 +117,7 @@
                                 <h3>Trailing Stop Loss</h3>
                                 <div class="input-group">
                                     <div>
-                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern['Trailing Stop Loss']">
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentTrailStopLoss">
                                             <div ng-if="display(item)">
                                                 <input type="checkbox" name="validation-name" ng-model="item.value" />
                                                 <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
@@ -134,7 +131,7 @@
                                 <h3>Target</h3>
                                 <div class="input-group">
                                     <div>
-                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern['Target']">
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentTargets">
                                             <div ng-if="display(item)">
                                                 <input type="checkbox" name="validation-name" ng-model="item.value" />
                                                 <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
@@ -152,7 +149,7 @@
                                 <h3>Adhesion</h3>
                                 <div class="input-group">
                                     <div>
-                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentPattern.Adhesion">
+                                        <div class="checkbox-custom checkbox-primary" ng-repeat="item in currentAdhesion">
                                             <div ng-if="display(item)">
                                                 <input type="checkbox" name="validation-name" ng-model="item.value" />
                                                 <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
@@ -177,10 +174,10 @@
 
 
 
-                        <!--
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary">Save</button>
-                                </div>-->
+                
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
 
                     </form>
                 </div>
@@ -189,4 +186,80 @@
             <div class="clearfix hidden-xs"></div>
         </div>
     </div>
+
+    <div class="panel panel-bordered">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ "My trades" }}</h3>
+            <div class="panel-actions">
+                <!--<a class="panel-action icon wb-minus" aria-expanded="true" data-toggle="panel-collapse" aria-hidden="true"></a>-->
+            </div>
+        </div>
+        <div class="panel-body">
+            <table ng-table="myTradesTable" class="table table-bordered table-striped table-condensed">
+                <tr ng-repeat="row in $data">
+                    <td data-title="'pattern'" filter="{name: 'text'}" sortable="'pattern'">
+                        {{ row.pattern['name'] }}
+                    </td>
+                    <td data-title="'trade'" filter="{name: 'text'}" sortable="'trade'">
+                        {{ row.trade['label'] }}
+                    </td>
+                    <td data-title="'validations'" filter="{name: 'text'}" sortable="'validations'">
+                        <div ng-repeat="validation in row.validations track by $index">
+                            {{ validation['label'] }}
+                        </div>
+                    </td>
+
+                    <td data-title="'confirmations'" filter="{name: 'text'}" sortable="'confirmations'">
+                        <div ng-repeat="confirmation in row.confirmations track by $index">
+                            {{ confirmation['label'] }}
+                        </div>
+                    </td>
+
+                    <td data-title="'zones'" filter="{name: 'text'}" sortable="'zones'">
+                        <div ng-repeat="zone in row.zones track by $index">
+                            {{ zone['label'] }}
+                        </div>
+                    </td>
+
+                    <td data-title="'probabilities'" filter="{name: 'text'}" sortable="'probabilities'">
+                        <div ng-repeat="probability in row.probabilities track by $index">
+                            {{ probability['label'] }}
+                        </div>
+                    </td>
+
+                    <td data-title="'stop_loss'" filter="{name: 'text'}" sortable="'stop_loss'">
+                        <div ng-repeat="stopLoss in row.stop_loss track by $index">
+                            {{ stopLoss['label'] }}
+                        </div>
+                    </td>
+
+                    <td data-title="'trailing_stop_loss'" filter="{name: 'text'}" sortable="'trailing_stop_loss'">
+                        <div ng-repeat="trailStopLoss in row.trailing_stop_loss track by $index">
+                            {{ trailStopLoss['label'] }}
+                        </div>
+                    </td>
+
+                    <td data-title="'targets'" filter="{name: 'text'}" sortable="'targets'">
+                        <div ng-repeat="target in row.targets track by $index">
+                            {{ target['label'] }}
+                        </div>
+                    </td>
+
+                    <td data-title="'adhesion'" filter="{name: 'text'}" sortable="'adhesion'">
+                        <div ng-repeat="adhesion in row.adhesion track by $index">
+                            {{ adhesion['label'] }}
+                        </div>
+                    </td>
+
+                    <td data-title="'comments'" filter="{name: 'text'}" sortable="'comments'">
+                        {{ row.comments }}
+                    </td>
+
+                    
+
+                </tr>
+            </table>
+        </div>
+    </div>
+
 </div>

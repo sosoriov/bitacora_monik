@@ -107,8 +107,8 @@ gulp.task('vendor', function() {
         'angular-animate/angular-animate.min.js',
         'angular-sanitize/angular-sanitize.min.js',
         'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
-        'lodash/lodash.min.js'
-        // 'ng-table/dist/ng-table.min.js'
+        'lodash/lodash.min.js',
+        'ng-table/dist/ng-table.min.js'
       ].map(toNPMPaths))
       .pipe(concat('vendor.js'))
       .pipe(gulp.dest( paths.dist + 'js' ));
