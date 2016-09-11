@@ -35,6 +35,7 @@
                             <div class="col-lg-4 col-sm-4">
                                 <h3>Validation</h3>
                                 <div class="input-group">
+                                    {{currentValidations}}
                                     <div>
                                         <div name="validations" class="checkbox-custom checkbox-primary" ng-repeat="item in currentValidations">
                                             <div ng-if="display(item)">
@@ -167,14 +168,7 @@
                             </div>
                         </div>
 
-
-
-
-
-
-
-
-                
+               
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Save</button>
                         </div>
@@ -197,6 +191,9 @@
         <div class="panel-body">
             <table ng-table="myTradesTable" class="table table-bordered table-striped table-condensed">
                 <tr ng-repeat="row in $data">
+                    <td data-title="'Date'" filter="{name: 'text'}" sortable="'trade_date'">
+                        {{ row.trade_date | date:"dd/MM/yyyy hh:mm" }}
+                    </td>
                     <td data-title="'pattern'" filter="{name: 'text'}" sortable="'pattern'">
                         {{ row.pattern['name'] }}
                     </td>

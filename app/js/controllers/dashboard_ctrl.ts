@@ -211,6 +211,8 @@ angular.module('app')
       var targets = getItemsToSave($scope.currentTargets);
       var adhesiones = getItemsToSave($scope.currentAdhesion);
 
+      var comments = $scope.currentPattern['generalComments'] || "";
+
       var finalData = {
         "validations": _.toPlainObject(validations),
         "confirmations": _.toPlainObject(conf),
@@ -222,7 +224,8 @@ angular.module('app')
         "trade": $scope.currentPattern['selectedTrade'],
         "pattern": $scope.currentPattern['$id'],
         "probabilities": _.toPlainObject(prob),
-        "comments": $scope.currentPattern['generalComments']
+        "comments": comments,
+        "trade_date": new Date().getTime()
       }
 
       console.log(finalData);
@@ -346,7 +349,8 @@ angular.module('app')
           "probabilities": customProb,
           "pattern": patternInfo,
           "trade": tradeInfo,
-          "comments": i["comments"]
+          "comments": i["comments"],
+          "trade_date": i['trade_date']
           
         }
 
