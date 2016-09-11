@@ -35,7 +35,6 @@
                             <div class="col-lg-4 col-sm-4">
                                 <h3>Validation</h3>
                                 <div class="input-group">
-                                    {{currentValidations}}
                                     <div>
                                         <div name="validations" class="checkbox-custom checkbox-primary" ng-repeat="item in currentValidations">
                                             <div ng-if="display(item)">
@@ -219,7 +218,7 @@
                     </td>
 
                     <td data-title="'probabilities'" filter="{name: 'text'}" sortable="'probabilities'">
-                        <div ng-repeat="probability in row.probabilities track by $index">
+                        <div title="{{ probability['prob_comments'] }}" ng-repeat="probability in row.probabilities track by $index">
                             {{ probability['label'] }}
                         </div>
                     </td>

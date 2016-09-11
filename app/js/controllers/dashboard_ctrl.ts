@@ -46,7 +46,7 @@ angular.module('app')
     $scope.currentTargets = {};
     $scope.currentAdhesion = {};
 
-    $scope.myTradesTable = new NgTableParams();
+    $scope.myTradesTable = new NgTableParams({ sorting: { trade_date: "desc" } });
 
     var patternsRef = firebase.database().ref().child("patterns");
     var tradesRef = firebase.database().ref().child("trades");
@@ -205,7 +205,7 @@ angular.module('app')
       var trades = getItemsToSave($scope.currentTrades);
       var conf = getItemsToSave($scope.currentConfirmations);
       var zones = getItemsToSave($scope.currentZones);
-      var prob = getItemsToSave($scope.currentProb);
+      var prob = getItemsToSaveProbabilities($scope.currentProb);
       var stopLoss = getItemsToSave($scope.currentStopLoss);
       var trailStopLoss = getItemsToSave($scope.currentTrailStopLoss);
       var targets = getItemsToSave($scope.currentTargets);
@@ -234,8 +234,8 @@ angular.module('app')
       myTradesRef.push(finalData);
       
       debugger
-      console.log("submiting ----");
-      console.log($scope.formData.items);
+
+      updateMyTradesInfo();
     }
 
     function getItemsToSave(propertyToSave) {
@@ -251,6 +251,28 @@ angular.module('app')
 
       // get only the id.
       return _.map(filtered, i => { return i["$id"] });
+    }
+
+    function getItemsToSaveProbabilities(propertyToSave) {
+      if (_.isUndefined(propertyToSave)) {
+        return [];
+      }
+
+      debugger
+
+      let filtered = _.filter(propertyToSave, (item, i) => {
+        if (item['value'] == true) {
+          return item;
+        }
+      });
+
+      // get only the id.
+      return _.map(filtered, i => {
+         return {
+           "id": i["$id"],
+           "prob_comments": i["comments"]
+         } 
+      });
     }
 
 
@@ -319,49 +341,71 @@ angular.module('app')
       return results;
     }
 
-    myTradesObj.$loaded().then(function (myTrades) {
-      console.log("trades -----------", myTrades);
+    function returnItemFromDB2(items, itemName, collectionName, patternKey ) {
+      var results = [];
+      debugger
+      _.forEach(items[itemName], item => {
+        var myItem = _.find($scope[collectionName], function(i) {
+          return i["pattern_key"] == patternKey &&  i["$id"] == item['id'];
+        })
 
-      var myTradeResponse = _.map(myTrades, i => {
-        if (_.isUndefined(i["pattern"])) {
-          return {};
-        }
-        var customVal = returnItemFromDB(i, "validations", "validationsData", i['pattern']);
-        var customConf = returnItemFromDB(i, "confirmations", "confirmationsData", i['pattern']);
-        var customZones = returnItemFromDB(i, "zones", "zonesData", i['pattern']);
-        var customProb = returnItemFromDB(i, "probabilities", "probData", i['pattern']);
-        var customStopLoss = returnItemFromDB(i, "stop_loss", "stopLossData", i['pattern']);
-        var customTrailStopLoss = returnItemFromDB(i, "trailing_stop_loss", "trailingStopLossData", i['pattern']);
-        var customTargets = returnItemFromDB(i, "targets", "targetsData", i['pattern']);
-        var customAdhesion = returnItemFromDB(i, "adhesion", "adhesionData", i['pattern']);
-        var patternInfo = findPattern(i["pattern"]);
-        var tradeInfo = findTrade(i["trade"]);
-
-        return {
-          "$id": i["$id"],
-          "validations": customVal,
-          "confirmations": customConf,
-          "zones": customZones,
-          "trailing_stop_loss": customTrailStopLoss,
-          "stop_loss": customStopLoss,
-          "targets": customTargets,
-          "adhesion": customAdhesion,
-          "probabilities": customProb,
-          "pattern": patternInfo,
-          "trade": tradeInfo,
-          "comments": i["comments"],
-          "trade_date": i['trade_date']
-          
-        }
-
+        myItem["prob_comments"] = item['prob_comments']
+        results.push(myItem);
       })
 
-      $scope.myTradesData = myTradeResponse;
-      $scope.myTradesTable.settings({
-        dataset: myTradeResponse
-      });
+      return results;
+    }
 
-    });
+
+    function updateMyTradesInfo() {
+      myTradesObj.$loaded().then(function (myTrades) {
+        console.log("trades -----------", myTrades);
+
+        var myTradeResponse = _.map(myTrades, i => {
+          if (_.isUndefined(i["pattern"])) {
+            return {};
+          }
+          var customVal = returnItemFromDB(i, "validations", "validationsData", i['pattern']);
+          var customConf = returnItemFromDB(i, "confirmations", "confirmationsData", i['pattern']);
+          var customZones = returnItemFromDB(i, "zones", "zonesData", i['pattern']);
+          var customProb = returnItemFromDB2(i, "probabilities", "probData", i['pattern']);
+          var customStopLoss = returnItemFromDB(i, "stop_loss", "stopLossData", i['pattern']);
+          var customTrailStopLoss = returnItemFromDB(i, "trailing_stop_loss", "trailingStopLossData", i['pattern']);
+          var customTargets = returnItemFromDB(i, "targets", "targetsData", i['pattern']);
+          var customAdhesion = returnItemFromDB(i, "adhesion", "adhesionData", i['pattern']);
+          var patternInfo = findPattern(i["pattern"]);
+          var tradeInfo = findTrade(i["trade"]);
+
+          return {
+            "$id": i["$id"],
+            "validations": customVal,
+            "confirmations": customConf,
+            "zones": customZones,
+            "trailing_stop_loss": customTrailStopLoss,
+            "stop_loss": customStopLoss,
+            "targets": customTargets,
+            "adhesion": customAdhesion,
+            "probabilities": customProb,
+            "pattern": patternInfo,
+            "trade": tradeInfo,
+            "comments": i["comments"],
+            "trade_date": i['trade_date']
+
+          }
+
+        })
+
+        $scope.myTradesData = myTradeResponse;
+        $scope.myTradesTable.settings({
+          dataset: myTradeResponse
+        });
+
+      });
+    }
+
+    updateMyTradesInfo();
+
+
 
 
 
