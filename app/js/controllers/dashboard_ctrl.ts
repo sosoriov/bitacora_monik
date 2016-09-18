@@ -180,6 +180,7 @@ angular.module('app')
           return item;
         }
       });
+      
       $scope[scopeProperty] = filtered;
     }
 
@@ -233,8 +234,6 @@ angular.module('app')
       // saving into the database
       myTradesRef.push(finalData);
       
-      debugger
-
       updateMyTradesInfo();
     }
 
@@ -257,8 +256,6 @@ angular.module('app')
       if (_.isUndefined(propertyToSave)) {
         return [];
       }
-
-      debugger
 
       let filtered = _.filter(propertyToSave, (item, i) => {
         if (item['value'] == true) {
@@ -343,7 +340,6 @@ angular.module('app')
 
     function returnItemFromDB2(items, itemName, collectionName, patternKey ) {
       var results = [];
-      debugger
       _.forEach(items[itemName], item => {
         var myItem = _.find($scope[collectionName], function(i) {
           return i["pattern_key"] == patternKey &&  i["$id"] == item['id'];
@@ -404,6 +400,120 @@ angular.module('app')
     }
 
     updateMyTradesInfo();
+
+
+    $scope.editOperation = function(operationId, patternId) {
+      console.log("operationId", operationId);
+      console.log("pattern ID", patternId);
+
+      $scope.getAllPatternInfo(patternId);
+
+      console.log($scope.myTradesData);
+
+      var operationInfo = findOperation(operationId);
+      console.log(operationInfo);
+
+      $scope.formData.selectedPattern = patternId;
+      findPatternTrades(patternId);
+      $scope.currentPattern.selectedTrade = operationInfo['trade']['$id'];
+      $scope.getSelectedPatternName(operationInfo['pattern']['name']);
+
+      selectValidations(operationInfo['validations']);
+      selectConfirmations(operationInfo['confirmations']);
+      selectZones(operationInfo['zones']);
+      selectProbs(operationInfo['probabilities']);
+      selectStopLoss(operationInfo['stop_loss']);
+      selectTrailingStopLoss(operationInfo['trailing_stop_loss']);
+      selectTargets(operationInfo['targets']);
+      selectAdhesion(operationInfo['adhesion']);
+      
+      
+    }
+
+    function findOperation(operationId) {
+      return _.find($scope.myTradesData, {"$id": operationId});
+    }
+
+    function selectValidations(validations) {
+      _.forEach(validations, i => {
+        _.forEach($scope.currentValidations, (sVal, k) => {
+          if(i['$id'] == sVal['$id']) {
+            $scope.currentValidations[k]['value'] = true;
+          }
+        });        
+      })
+    }
+
+    function selectConfirmations(confirmations) {
+      _.forEach(confirmations, i => {
+        _.forEach($scope.currentConfirmations, (sVal, k) => {
+          if(i['$id'] == sVal['$id']) {
+            $scope.currentConfirmations[k]['value'] = true;
+          }
+        });        
+      })
+    }
+
+    function selectZones(zones) {
+      _.forEach(zones, i => {
+        _.forEach($scope.currentZones, (sVal, k) => {
+          if(i['$id'] == sVal['$id']) {
+            $scope.currentZones[k]['value'] = true;
+          }
+        });        
+      })
+    }
+
+    function selectProbs(probs) {
+      _.forEach(probs, i => {
+        _.forEach($scope.currentProb, (sVal, k) => {
+          if(i['$id'] == sVal['$id']) {
+            $scope.currentProb[k]['value'] = true;
+            $scope.currentProb[k]['comments'] = i['prob_comments'];
+          }
+        });        
+      })
+    }
+
+    function selectStopLoss(stops) {
+      _.forEach(stops, i => {
+        _.forEach($scope.currentStopLoss, (sVal, k) => {
+          if(i['$id'] == sVal['$id']) {
+            $scope.currentStopLoss[k]['value'] = true;
+          }
+        });        
+      })
+    }
+
+    function selectTrailingStopLoss(stops) {
+      _.forEach(stops, i => {
+        _.forEach($scope.currentTrailStopLoss, (sVal, k) => {
+          if(i['$id'] == sVal['$id']) {
+            $scope.currentTrailStopLoss[k]['value'] = true;
+          }
+        });        
+      })
+    }
+
+    function selectTargets(targets) {
+      _.forEach(targets, i => {
+        _.forEach($scope.currentTargets, (sVal, k) => {
+          if(i['$id'] == sVal['$id']) {
+            $scope.currentTargets[k]['value'] = true;
+          }
+        });        
+      })
+    }
+
+    function selectAdhesion(adhesiones) {
+      _.forEach(adhesiones, i => {
+        _.forEach($scope.currentAdhesion, (sVal, k) => {
+          if(i['$id'] == sVal['$id']) {
+            $scope.currentAdhesion[k]['value'] = true;
+          }
+        });        
+      })
+    }
 
 
 
