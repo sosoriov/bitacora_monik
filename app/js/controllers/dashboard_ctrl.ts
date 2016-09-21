@@ -212,6 +212,8 @@ angular.module('app')
       var targets = getItemsToSave($scope.currentTargets);
       var adhesiones = getItemsToSave($scope.currentAdhesion);
 
+      debugger
+
       var comments = $scope.currentPattern['generalComments'] || "";
 
       var finalData = {
@@ -231,8 +233,15 @@ angular.module('app')
 
       console.log(finalData);
 
-      // saving into the database
-      myTradesRef.push(finalData);
+      if(_.isUndefined($scope.currentPattern.operationId)) {
+        // saving into the database
+        myTradesRef.push(finalData);
+      } else {
+        var updates = {};
+        updates[$scope.currentPattern.operationId] = finalData;
+        // finalData['$id'] = $scope.currentPattern.operationId;
+        myTradesRef.update(updates);
+      }
       
       updateMyTradesInfo();
     }
@@ -415,6 +424,7 @@ angular.module('app')
 
       $scope.formData.selectedPattern = patternId;
       findPatternTrades(patternId);
+      $scope.currentPattern.operationId = operationId;
       $scope.currentPattern.selectedTrade = operationInfo['trade']['$id'];
       $scope.getSelectedPatternName(operationInfo['pattern']['name']);
 
