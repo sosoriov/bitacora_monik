@@ -47,6 +47,7 @@ var paths = {
     img: 'public/img/**/*',
     font: 'public/font/**/*',
     css: 'public/css/**/*',
+    plugins: 'plugins/**/*'
   }
 
 var webpackConfig = {
@@ -164,7 +165,8 @@ gulp.task('assets', function () {
     'img',
     'font',
     'html',
-    'css'
+    'css',
+    'plugins'
     )
 })
 
@@ -181,6 +183,11 @@ gulp.task('font', function () {
 gulp.task('html', function () {
   return gulp.src(paths.html)
           .pipe(gulp.dest(paths.dist))
+})
+
+gulp.task('plugins', function () {
+  return gulp.src(paths.plugins)
+          .pipe(gulp.dest(paths.dist + 'js/plugins'))
 })
 
 /**
