@@ -3,6 +3,7 @@
 import { ALL_DATA } from '../data/patterns';
 
 declare var firebase: any;
+declare var alertify: any;
 
 var config = {
   apiKey: "AIzaSyCxIOPJmGcrftfSWrvoUDrD1BqAuxAxYZ8",
@@ -212,8 +213,6 @@ angular.module('app')
       var targets = getItemsToSave($scope.currentTargets);
       var adhesiones = getItemsToSave($scope.currentAdhesion);
 
-      debugger
-
       var comments = $scope.currentPattern['generalComments'] || "";
 
       var finalData = {
@@ -233,17 +232,24 @@ angular.module('app')
 
       console.log(finalData);
 
-      if(_.isUndefined($scope.currentPattern.operationId)) {
-        // saving into the database
-        myTradesRef.push(finalData);
-      } else {
-        var updates = {};
-        updates[$scope.currentPattern.operationId] = finalData;
-        // finalData['$id'] = $scope.currentPattern.operationId;
-        myTradesRef.update(updates);
+      try {
+        if (_.isUndefined($scope.currentPattern.operationId)) {
+          // saving into the database
+          myTradesRef.push(finalData);
+        } else {
+          // update existing
+          var updates = {};
+          updates[$scope.currentPattern.operationId] = finalData;
+          myTradesRef.update(updates);
+        }
+
+        updateMyTradesInfo();
+
+        alertify.success("Your data has been saved.");
+      } catch (error) {
+        alertify.error("An error has been occurred.")
       }
       
-      updateMyTradesInfo();
     }
 
     function getItemsToSave(propertyToSave) {
