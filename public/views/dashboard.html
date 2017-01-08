@@ -138,6 +138,10 @@
                                                 <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
                                             </div>
                                         </div>
+                                        <div class="form-group">
+                                            <label>Pips</label>
+                                            <input type="number" value="" name="pips" ng-model="currentPattern.stopLossPips" class="form-control">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -288,6 +292,9 @@
 
                     <td data-title="'comments'" filter="{name: 'text'}" sortable="'comments'">
                         {{ row.comments }}
+                    </td>
+                    <td data-title="'stop_loss_pips'" filter="{name: 'text'}" sortable="'stop_loss_pips'">
+                        {{ row.stop_loss_pips }}
                     </td>
 
                     <td data-title="'Options'">

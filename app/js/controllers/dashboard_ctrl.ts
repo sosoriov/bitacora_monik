@@ -151,7 +151,6 @@ angular.module('app')
     }
 
     function findPair(pairId: string) {
-      debugger
       let filtered = _.filter($scope.pairsData, (t, i) => {
         if (t['$id'] == pairId) {
           return t;
@@ -237,6 +236,10 @@ angular.module('app')
 
       var comments = $scope.currentPattern['generalComments'] || "";
       var riskPercentage = $scope.currentPattern['riskPercentage'] || "";
+      var stopLossPips = $scope.currentPattern['stopLossPips'] || 0;
+
+      debugger
+      console.log("stop lossss", stopLoss)
 
       var finalData = {
         "validations": _.toPlainObject(validations),
@@ -253,7 +256,8 @@ angular.module('app')
         "probabilities": _.toPlainObject(prob),
         "comments": comments,
         "risk": riskPercentage,
-        "trade_date": new Date().getTime()
+        "trade_date": new Date().getTime(),
+        "stop_loss_pips": stopLossPips
       }
 
       console.log("this is the final data", finalData);
@@ -449,7 +453,8 @@ angular.module('app')
             "comments": i["comments"],
             "pair": pair,
             "timeframes": timeframe,
-            "trade_date": i['trade_date']
+            "trade_date": i['trade_date'],
+            "stop_loss_pips": i['stop_loss_pips']
 
           }
 
