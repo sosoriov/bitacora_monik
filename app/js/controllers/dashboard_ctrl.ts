@@ -150,6 +150,27 @@ angular.module('app')
       return filtered[0];
     }
 
+    function findPair(pairId: string) {
+      debugger
+      let filtered = _.filter($scope.pairsData, (t, i) => {
+        if (t['$id'] == pairId) {
+          return t;
+        }
+      });
+
+      return filtered[0];
+    }
+
+    function findTimeframe(timeframeId: string) {
+      let filtered = _.filter($scope.timeFrameData, (t, i) => {
+        if (t['$id'] == timeframeId) {
+          return t;
+        }
+      });
+
+      return filtered[0];
+    }
+
     function findPatternTrades(patternId: string) {
       let filtered = _.filter($scope.tradesData, (trade, i) => {
         if (trade['pattern_key'] == patternId) {
@@ -215,6 +236,7 @@ angular.module('app')
       var adhesiones = getItemsToSave($scope.currentAdhesion);
 
       var comments = $scope.currentPattern['generalComments'] || "";
+      var riskPercentage = $scope.currentPattern['riskPercentage'] || "";
 
       var finalData = {
         "validations": _.toPlainObject(validations),
@@ -226,12 +248,15 @@ angular.module('app')
         "adhesion": _.toPlainObject(adhesiones),
         "trade": $scope.currentPattern['selectedTrade'],
         "pattern": $scope.currentPattern['$id'],
+        "pair": $scope.currentPattern['selectedPair'],
+        "timeframes": $scope.currentPattern['selectedTimeframe'],
         "probabilities": _.toPlainObject(prob),
         "comments": comments,
+        "risk": riskPercentage,
         "trade_date": new Date().getTime()
       }
 
-      console.log(finalData);
+      console.log("this is the final data", finalData);
 
       try {
         if (_.isUndefined($scope.currentPattern.operationId)) {
@@ -257,6 +282,7 @@ angular.module('app')
         })
       } catch (error) {
         alertify.error("An error has been occurred.")
+        throw error
       }
       
     }
@@ -403,6 +429,10 @@ angular.module('app')
           var customAdhesion = returnItemFromDB(i, "adhesion", "adhesionData", i['pattern']);
           var patternInfo = findPattern(i["pattern"]);
           var tradeInfo = findTrade(i["trade"]);
+          var timeframe = findTimeframe(i["timeframes"]);
+          var pair = findPair(i["pair"]);
+
+          console.log("this iss thssss", pair)
 
           return {
             "$id": i["$id"],
@@ -417,6 +447,8 @@ angular.module('app')
             "pattern": patternInfo,
             "trade": tradeInfo,
             "comments": i["comments"],
+            "pair": pair,
+            "timeframes": timeframe,
             "trade_date": i['trade_date']
 
           }

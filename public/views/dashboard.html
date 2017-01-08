@@ -6,7 +6,9 @@
                 <div class="example">
                     <form name="operationForm" novalidate class="simple-form" ng-submit="submit()">
                         <div class="form-group">
-                            <h3>Pattern</h3>
+                            <h3>Pattern
+                                <button name="clean" ng-click="cleanPattern()" class="btn btn-warning pull-right">Clean Current Pattern</button>
+                            </h3>
                             <div>
                                 <div class="radio-custom radio-default radio-inline" ng-repeat="(keyPattern, pattern) in patterns">
                                     <input type="radio" ng-change="getAllPatternInfo('{{ keyPattern }}')" ng-model="formData.selectedPattern" value="{{ keyPattern }}" id="{{ keyPattern }}"
@@ -17,50 +19,50 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-sm-4 col-md-4">
+                            <div class="col-sm-3 col-md-3">
+                                <h3>Trade                              
+                                </h3>
+                                <div>
+                                    <div class="radio-custom radio-default radio-inline" ng-repeat="item in currentTrades">
+                                        <input type="radio" ng-change="getSelectedPatternName(item.label)" ng-model="currentPattern.selectedTrade" value="{{ item.$id }}" id="{{ item.$id }}" name="{{ item.label }}"
+                                        />
+                                        <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-3 col-md-3">
                                 <h3>Pair </h3>
                                 <div class="form-group">
-                                    <select class="form-control" name="pairs" required ng-model="formData.selectedPair" ng-options="m.$id as m.name for m in pairsData">
+                                    <select class="form-control" name="pairs" required ng-model="currentPattern.selectedPair" ng-options="m.$id as m.name for m in pairsData">
                                         <option value="">Select Pair</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="col-sm-4 col-md-4">
+                            <div class="col-sm-3 col-md-3">
                                 <h3>Time frame </h3>
                                 <div class="form-group">
-                                    <select class="form-control" name="pairs" required ng-model="formData.selectedTimeframe" ng-options="m.$id as m.name for m in timeFrameData">
-                                        <option value="">Select Pair</option>
+                                    <select class="form-control" name="pairs" required ng-model="currentPattern.selectedTimeframe" ng-options="m.$id as m.name for m in timeFrameData">
+                                        <option value="">Select time frame</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="col-sm-4 col-md-4">
+                            <div class="col-sm-3 col-md-3">
                                 <h3>% Risk</h3>
                                 <div class="form-group">
-                                    <input type="text" value="" required name="riskPercentage" ng-model="formData.riskPercentage" class="form-control">
+                                    <input type="text" value="" required name="riskPercentage" ng-model="currentPattern.riskPercentage" class="form-control">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <h3>Trade
-                                <button name="clean" ng-click="cleanPattern()" class="btn btn-warning pull-right">Clean Current Pattern</button>
-                            </h3>
-                            <div>
-                                <div class="radio-custom radio-default radio-inline" ng-repeat="item in currentTrades">
-                                    <input type="radio" ng-change="getSelectedPatternName(item.label)" ng-model="currentPattern.selectedTrade" value="{{ item.$id }}" id="{{ item.$id }}" name="{{ item.label }}"
-                                    />
-                                    <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
-                                </div>
-                            </div>
-
-                        </div>
+                        
 
                         <div class="row">
                             <div class="col-lg-4 col-sm-4">
                                 <h3>Validation</h3>
-                                {{ currentValidations }}
                                 <div class="input-group">
                                     <div>
                                         <div name="validations" class="checkbox-custom checkbox-primary" ng-repeat="item in currentValidations">
@@ -223,6 +225,12 @@
                     <td data-title="'pattern'" filter="{name: 'text'}" sortable="'pattern'">
                         {{ row.pattern['name'] }}
                     </td>
+                    <td data-title="'pair'" filter="{name: 'text'}" sortable="'pair'">
+                        {{ row.pair['name'] }}
+                    </td>
+                    <td data-title="'timeframes'" filter="{name: 'text'}" sortable="'timeframes'">
+                        {{ row.timeframes['name'] }}
+                    </td>
                     <td data-title="'trade'" filter="{name: 'text'}" sortable="'trade'">
                         {{ row.trade['label'] }}
                     </td>
@@ -272,6 +280,10 @@
                         <div ng-repeat="adhesion in row.adhesion track by $index">
                             {{ adhesion['label'] }}
                         </div>
+                    </td>
+
+                    <td data-title="'risk'" filter="{name: 'text'}" sortable="'risk'">
+                        {{ row.risk }}
                     </td>
 
                     <td data-title="'comments'" filter="{name: 'text'}" sortable="'comments'">
