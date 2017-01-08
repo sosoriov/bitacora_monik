@@ -16,6 +16,33 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4">
+                                <h3>Pair </h3>
+                                <div class="form-group">
+                                    <select class="form-control" name="pairs" required ng-model="formData.selectedPair" ng-options="m.$id as m.name for m in pairsData">
+                                        <option value="">Select Pair</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <h3>Time frame </h3>
+                                <div class="form-group">
+                                    <select class="form-control" name="pairs" required ng-model="formData.selectedTimeframe" ng-options="m.$id as m.name for m in timeFrameData">
+                                        <option value="">Select Pair</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <h3>% Risk</h3>
+                                <div class="form-group">
+                                    <input type="text" value="" required name="riskPercentage" ng-model="formData.riskPercentage" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <h3>Trade
                                 <button name="clean" ng-click="cleanPattern()" class="btn btn-warning pull-right">Clean Current Pattern</button>
@@ -33,6 +60,7 @@
                         <div class="row">
                             <div class="col-lg-4 col-sm-4">
                                 <h3>Validation</h3>
+                                {{ currentValidations }}
                                 <div class="input-group">
                                     <div>
                                         <div name="validations" class="checkbox-custom checkbox-primary" ng-repeat="item in currentValidations">

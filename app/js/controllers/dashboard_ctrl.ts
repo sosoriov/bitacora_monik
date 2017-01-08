@@ -25,6 +25,8 @@ angular.module('app')
     $scope.selectedPatternName = "";
 
     $scope.patternsData = {};
+    $scope.pairsData = {}
+    $scope.timeFrameData = {}
     $scope.tradesData = {};
     $scope.validationsData = {};
     $scope.confirmationsData = {};
@@ -36,16 +38,20 @@ angular.module('app')
     $scope.adhesionData = {};
     $scope.myTradesData = {};
 
-    $scope.currentPattern = {};
-    $scope.currentTrades = {};
-    $scope.currentValidations = {};
-    $scope.currentConfirmations = {};
-    $scope.currentZones = {};
-    $scope.currentProb = {};
-    $scope.currentStopLoss = {};
-    $scope.currentTrailStopLoss = {};
-    $scope.currentTargets = {};
-    $scope.currentAdhesion = {};
+    function initCurrentStates() {
+      $scope.currentPattern = {};
+      $scope.currentTrades = {};
+      $scope.currentValidations = {};
+      $scope.currentConfirmations = {};
+      $scope.currentZones = {};
+      $scope.currentProb = {};
+      $scope.currentStopLoss = {};
+      $scope.currentTrailStopLoss = {};
+      $scope.currentTargets = {};
+      $scope.currentAdhesion = {};
+    }
+
+    initCurrentStates();
 
     $scope.myTradesTable = new NgTableParams({ sorting: { trade_date: "desc" } });
 
@@ -60,6 +66,9 @@ angular.module('app')
     var targetRef = firebase.database().ref().child("targets");
     var adhesionRef = firebase.database().ref().child("adhesion");
     var myTradesRef = firebase.database().ref().child("my_trades");
+    var pairsRef = firebase.database().ref().child("pairs");
+    var timeframeRef = firebase.database().ref().child("timeframes");
+
     // download the data into a local object
     var patternsObj = $firebaseArray(patternsRef);
     var tradesObj = $firebaseArray(tradesRef);
@@ -72,6 +81,8 @@ angular.module('app')
     var targetObj = $firebaseArray(targetRef);
     var adhesionObj = $firebaseArray(adhesionRef);
     var myTradesObj = $firebaseArray(myTradesRef);
+    var pairsObj = $firebaseArray(pairsRef)
+    var timeFrameObj = $firebaseArray(timeframeRef)
 
     function getPatternNames() {
       _.forEach($scope.patternsData, function (pattern) {
@@ -91,18 +102,6 @@ angular.module('app')
         console.warn("The selected trade does not exist in the current item");
         return false;
       }
-      // if (_.isUndefined($scope.currentPattern.selectedTrade) || _.isUndefined(currentItem)) {
-      //   return true;
-      // }
-
-      // if ($scope.currentPattern.selectedTrade in currentItem) {
-      //   if (currentItem[$scope.currentPattern.selectedTrade] == true) {
-      //     return true;
-      //   } else {
-      //     return false;
-      //   }
-      // }
-      // return true;
     }
 
     $scope.cleanPattern = function () {
@@ -181,6 +180,8 @@ angular.module('app')
           return item;
         }
       });
+
+      var clonedProperty = _.cloneDeep($scope[scopeProperty]);
       
       $scope[scopeProperty] = filtered;
     }
@@ -246,6 +247,14 @@ angular.module('app')
         updateMyTradesInfo();
 
         alertify.success("Your data has been saved.");
+        initCurrentStates();
+
+        _.map($scope.validationsData, (i,k) => {
+          if(!_.isUndefined(i['value'])) {
+            // $scope.validationsData[k]['value'] = false;
+          }
+          
+        })
       } catch (error) {
         alertify.error("An error has been occurred.")
       }
@@ -328,6 +337,14 @@ angular.module('app')
 
     adhesionObj.$loaded().then(function (adhesion) {
       $scope.adhesionData = adhesion;
+    });
+
+    pairsObj.$loaded().then(function (pairsData) {
+      $scope.pairsData = pairsData;
+    });
+
+    timeFrameObj.$loaded().then(function (timeFrameData) {
+      $scope.timeFrameData = timeFrameData;
     });
 
     /**
