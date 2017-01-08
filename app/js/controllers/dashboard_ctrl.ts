@@ -49,7 +49,10 @@ angular.module('app')
       $scope.currentTrailStopLoss = {};
       $scope.currentTargets = {};
       $scope.currentAdhesion = {};
+          // by default assign compra as initial trade
+    $scope.currentPattern.tradeName = "compra";
     }
+    
 
     initCurrentStates();
 
@@ -123,9 +126,12 @@ angular.module('app')
     $scope.getSelectedPatternName = function (patternName: string) {
       if (!_.isUndefined($scope.currentPattern.selectedTrade)) {
         $scope.selectedPatternName = patternName.toLocaleLowerCase();
+        //updating the trade name in the scope
+        $scope.currentPattern.tradeName = patternName.toLocaleLowerCase();
       } else {
         $scope.selectedPatternName = "";
       }
+
     }
 
     function findPattern(patternId: string) {
@@ -218,6 +224,7 @@ angular.module('app')
       findCurrentPatternData(patternId, "trailingStopLossData", "currentTrailStopLoss");
       findCurrentPatternData(patternId, "targetsData", "currentTargets");
       findCurrentPatternData(patternId, "adhesionData", "currentAdhesion");
+      // $scope.currentPattern.tradeName = "compra";
     }
 
 
