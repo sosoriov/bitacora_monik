@@ -52,3 +52,4 @@ node_modules
 # Distribution directories
 dist
 server_version1
+.vscode
