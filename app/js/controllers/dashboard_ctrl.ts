@@ -23,6 +23,7 @@ angular.module('app')
       $scope.formData = {};
       $scope.trades = {};
       $scope.selectedPatternName = "";
+      $scope.displayDataLoader = true;
 
       $scope.patternsData = {};
       $scope.pairsData = {}
@@ -231,6 +232,7 @@ angular.module('app')
 
 
       $scope.submit = function () {
+        $scope.displayDataLoader = true;
         // TODO: add comments, date and additional info to the final trade.
         var validations = getItemsToSave($scope.currentValidations);
         var trades = getItemsToSave($scope.currentTrades);
@@ -291,6 +293,8 @@ angular.module('app')
           //     // $scope.validationsData[k]['value'] = false;
           //   }
 
+          // $scope.displayDataLoader = false;
+
           // })
         } catch (error) {
           alertify.error("An error has been occurred.")
@@ -339,6 +343,8 @@ angular.module('app')
       patternsObj.$loaded().then(function (patternsData) {
         $scope.patternsData = patternsData;
         getPatternNames();
+
+        $scope.displayDataLoader = false;
       });
 
       tradesObj.$loaded().then(function (trades) {

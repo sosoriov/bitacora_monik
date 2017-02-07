@@ -1,4 +1,9 @@
 <div class="page-content">
+    <!--loader -->
+    <div ng-if="displayDataLoader" id="loader"  class="example-loading example-well  vertical-align text-center">
+        <div class="loader vertical-align-middle loader-default" data-type="default"></div>
+    </div>
+    <!--end loader -->
     <div class="panel">
         <div class="panel-body container-fluid">
             <div class="example-wrap">
@@ -19,7 +24,6 @@
                                         <option value="">Select Pattern</option>
                                     </select>
                                 </div>
-                                
                             </div>
 
                             <div class="col-sm-2 col-md-2">
@@ -74,7 +78,6 @@
                                     <input type="number" value="" required name="riskPercentage" ng-model="currentPattern.riskPercentage" class="form-control">
                                 </div>
                             </div>
-                            <button name="clean" ng-click="cleanPattern()" class="btn btn-warning pull-right">Clean Current Pattern</button>
                         </div>
 
                         <div class="row">
@@ -230,6 +233,7 @@
                
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Save</button>
+                            <button name="clean" ng-click="cleanPattern()" class="btn btn-warning pull-right">Clean Current Pattern</button>
                         </div>
 
                     </form>
