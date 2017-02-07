@@ -11,7 +11,11 @@
                                     <span class="help-block" ng-message="required">This field is required</span>
                                 </div>
                                 <div class="form-group">
-                                    <select class="form-control" name="tradePattern" required ng-change="getAllPatternInfo(formData.selectedPattern)" ng-model="formData.selectedPattern" ng-options="key as value for (key , value) in patterns">
+                                    <select class="form-control" name="tradePattern"
+                                        required
+                                        ng-change="getAllPatternInfo(formData.selectedPattern)"
+                                        ng-model="formData.selectedPattern"
+                                        ng-options="key as value for (key , value) in patterns">
                                         <option value="">Select Pattern</option>
                                     </select>
                                 </div>
@@ -23,14 +27,14 @@
                                 <div class="has-error" ng-messages="operationForm.myTrade.$error">
                                     <span class="help-block" ng-message="required">This field is required</span>
                                 </div>
-                                <div class="radio-custom radio-default radio-inline" ng-repeat="item in currentTrades">
-                                    <input type="radio" 
-                                        ng-change="getSelectedPatternName(item.label)"
+                                <div class="form-group">
+                                    <select class="form-control"
                                         ng-model="currentPattern.selectedTrade"
-                                        value="{{ item.$id }}" id="{{ item.$id }}"
+                                        ng-change="getSelectedPatternName(currentPattern.selectedTrade)"
                                         required
-                                        name="myTrade" />
-                                    <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
+                                        name="myTrade"
+                                        ng-options="item.$id  as item.label for item in currentTrades">
+                                    </select>
                                 </div>
                             </div>
 
