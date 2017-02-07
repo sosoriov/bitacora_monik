@@ -140,7 +140,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" placeholder="comments"  value="" name="pips" ng-model="item.comments" class="form-control">
+                                            <input type="text" placeholder="comments"  value="" name="probComments" ng-model="item.comments" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -192,6 +192,10 @@
                                                 <input type="checkbox" name="validation-name" ng-model="item.value" />
                                                 <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Pips</label>
+                                            <input type="number" value="" name="targetPips" ng-model="currentPattern.targetPips" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -293,13 +297,13 @@
                         </div>
                     </td>
 
-                    <td data-title="'stop_loss'" filter="{name: 'text'}" sortable="'stop_loss'">
+                    <td data-title="'Stop loss'" filter="{name: 'text'}" sortable="'stop_loss'">
                         <div ng-repeat="stopLoss in row.stop_loss track by $index">
                             {{ stopLoss['label'] }}
                         </div>
                     </td>
 
-                    <td data-title="'trailing_stop_loss'" filter="{name: 'text'}" sortable="'trailing_stop_loss'">
+                    <td data-title="'T. stop loss'" filter="{name: 'text'}" sortable="'trailing_stop_loss'">
                         <div ng-repeat="trailStopLoss in row.trailing_stop_loss track by $index">
                             {{ trailStopLoss['label'] }}
                         </div>
@@ -324,8 +328,11 @@
                     <td data-title="'comments'" filter="{name: 'text'}" sortable="'comments'">
                         {{ row.comments }}
                     </td>
-                    <td data-title="'stop_loss_pips'" filter="{name: 'text'}" sortable="'stop_loss_pips'">
+                    <td data-title="'Stop loss pips'" filter="{name: 'text'}" sortable="'stop_loss_pips'">
                         {{ row.stop_loss_pips }}
+                    </td>
+                    <td data-title="'Target pips'" filter="{name: 'text'}" sortable="'target_pips'">
+                        {{ row.target_pips }}
                     </td>
 
                     <td data-title="'Options'">

@@ -247,6 +247,7 @@ angular.module('app')
         var comments = $scope.currentPattern['generalComments'] || "";
         var riskPercentage = $scope.currentPattern['riskPercentage'] || "";
         var stopLossPips = $scope.currentPattern['stopLossPips'] || 0;
+        var targetPips = $scope.currentPattern['targetPips'] || 0;
 
         debugger
         console.log("stop lossss", stopLoss)
@@ -267,37 +268,37 @@ angular.module('app')
           "comments": comments,
           "risk": riskPercentage,
           "trade_date": new Date().getTime(),
-          "stop_loss_pips": stopLossPips
+          "stop_loss_pips": stopLossPips,
+          "target_pips": targetPips
         }
 
-        console.log("this is the final data", finalData);
-
         try {
-          // if (_.isUndefined($scope.currentPattern.operationId)) {
-          //   // saving into the database
-          //   myTradesRef.push(finalData);
-          // } else {
-          //   // update existing
-          //   var updates = {};
-          //   updates[$scope.currentPattern.operationId] = finalData;
-          //   myTradesRef.update(updates);
-          // }
+          if (_.isUndefined($scope.currentPattern.operationId)) {
+            // saving into the database
+            myTradesRef.push(finalData);
+          } else {
+            // update existing
+            var updates = {};
+            updates[$scope.currentPattern.operationId] = finalData;
+            myTradesRef.update(updates);
+          }
 
-          // updateMyTradesInfo();
+          updateMyTradesInfo();
 
-          // alertify.success("Your data has been saved.");
-          // initCurrentStates();
+          alertify.success("Your data has been saved.");
+          initCurrentStates();
 
-          // _.map($scope.validationsData, (i, k) => {
-          //   if (!_.isUndefined(i['value'])) {
-          //     // $scope.validationsData[k]['value'] = false;
-          //   }
+          _.map($scope.validationsData, (i, k) => {
+            if (!_.isUndefined(i['value'])) {
+              // $scope.validationsData[k]['value'] = false;
+            }
 
-          // $scope.displayDataLoader = false;
+          $scope.displayDataLoader = false;
 
-          // })
+          })
         } catch (error) {
           alertify.error("An error has been occurred.")
+          $scope.displayDataLoader = false;
           throw error
         }
 
@@ -468,7 +469,8 @@ angular.module('app')
               "pair": pair,
               "timeframes": timeframe,
               "trade_date": i['trade_date'],
-              "stop_loss_pips": i['stop_loss_pips']
+              "stop_loss_pips": i['stop_loss_pips'],
+              "target_pips": i['target_pips']
 
             }
 
