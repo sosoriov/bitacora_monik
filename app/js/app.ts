@@ -10,7 +10,7 @@
  */
 
 angular
-    .module('app', ['ngAnimate', 'ngRoute', 'ngSanitize', 'ui.bootstrap', 'firebase', 'ngTable'])
+    .module('app', ['ngAnimate', 'ngRoute', 'ngSanitize', 'ui.bootstrap', 'firebase', 'ngTable', 'ngMessages'])
     .config(function($routeProvider, $httpProvider) {
         $routeProvider
             .when('/', {

@@ -105,6 +105,7 @@ gulp.task('vendor', function() {
         'bootstrap/dist/js/bootstrap.min.js',
         'angular/angular.min.js',
         'angular-route/angular-route.min.js',
+        'angular-messages/angular-messages.min.js',
         'angular-animate/angular-animate.min.js',
         'angular-sanitize/angular-sanitize.min.js',
         'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
