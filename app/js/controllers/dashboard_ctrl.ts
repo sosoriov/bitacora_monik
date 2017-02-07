@@ -451,7 +451,6 @@ angular.module('app')
             var pair = findPair(i["pair"]);
 
             console.log("this iss thssss", pair)
-
             return {
               "$id": i["$id"],
               "validations": customVal,
@@ -465,6 +464,7 @@ angular.module('app')
               "pattern": patternInfo,
               "trade": tradeInfo,
               "comments": i["comments"],
+              "risk": i["risk"],
               "pair": pair,
               "timeframes": timeframe,
               "trade_date": i['trade_date'],
