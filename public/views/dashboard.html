@@ -3,37 +3,47 @@
         <div class="panel-body container-fluid">
             <div class="example-wrap">
                 <div class="example">
-                    <form name="operationForm" novalidate class="simple-form" ng-submit="submit()">
+                    <form name="operationForm" novalidate class="simple-form" ng-submit="operationForm.$valid && submit()">
                         <div class="row">
                             <div class="col-sm-2 col-md-2">
-                                <h3>Pattern
-                                </h3>
+                                <h3>Pattern</h3>
+                                <div class="has-error" ng-messages="operationForm.tradePattern.$error">
+                                    <span class="help-block" ng-message="required">This field is required</span>
+                                </div>
                                 <div class="form-group">
-                                    <select class="form-control" name="pairs" required ng-change="getAllPatternInfo(formData.selectedPattern)" ng-model="formData.selectedPattern" ng-options="key as value for (key , value) in patterns">
+                                    <select class="form-control" name="tradePattern" required ng-change="getAllPatternInfo(formData.selectedPattern)" ng-model="formData.selectedPattern" ng-options="key as value for (key , value) in patterns">
                                         <option value="">Select Pattern</option>
                                     </select>
                                 </div>
+                                
                             </div>
 
                             <div class="col-sm-2 col-md-2">
-                                <h3>Trade                              
-                                </h3>
-
-
-                                <div>
-                                    <div class="radio-custom radio-default radio-inline" ng-repeat="item in currentTrades">
-                                        <input type="radio" ng-change="getSelectedPatternName(item.label)" ng-model="currentPattern.selectedTrade" value="{{ item.$id }}" id="{{ item.$id }}" name="{{ item.label }}"
-                                        />
-                                        <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
-                                    </div>
+                                <h3>Trade</h3>
+                                <div class="has-error" ng-messages="operationForm.myTrade.$error">
+                                    <span class="help-block" ng-message="required">This field is required</span>
                                 </div>
-
+                                <div class="radio-custom radio-default radio-inline" ng-repeat="item in currentTrades">
+                                    <input type="radio" 
+                                        ng-change="getSelectedPatternName(item.label)"
+                                        ng-model="currentPattern.selectedTrade"
+                                        value="{{ item.$id }}" id="{{ item.$id }}"
+                                        required
+                                        name="myTrade" />
+                                    <label for="{{ item.label }}" class="{{ item.class }}">{{ item.label }}</label>
+                                </div>
                             </div>
 
                             <div class="col-sm-2 col-md-2">
                                 <h3>Pair </h3>
+                                <div class="has-error" ng-messages="operationForm.pairs.$error">
+                                    <span class="help-block" ng-message="required">This field is required</span>
+                                </div>
                                 <div class="form-group">
-                                    <select class="form-control" name="pairs" required ng-model="currentPattern.selectedPair" ng-options="m.$id as m.name for m in pairsData">
+                                    <select class="form-control" name="pairs"
+                                        required
+                                        ng-model="currentPattern.selectedPair"
+                                        ng-options="m.$id as m.name for m in pairsData">
                                         <option value="">Select Pair</option>
                                     </select>
                                 </div>
@@ -41,8 +51,11 @@
 
                             <div class="col-sm-2 col-md-2">
                                 <h3>Time frame </h3>
+                                <div class="has-error" ng-messages="operationForm.timeFrame.$error">
+                                    <span class="help-block" ng-message="required">This field is required</span>
+                                </div>
                                 <div class="form-group">
-                                    <select class="form-control" name="pairs" required ng-model="currentPattern.selectedTimeframe" ng-options="m.$id as m.name for m in timeFrameData">
+                                    <select class="form-control" name="timeFrame" required ng-model="currentPattern.selectedTimeframe" ng-options="m.$id as m.name for m in timeFrameData">
                                         <option value="">Select time frame</option>
                                     </select>
                                 </div>
@@ -50,14 +63,15 @@
 
                             <div class="col-sm-2 col-md-2">
                                 <h3>% Risk</h3>
+                                <div class="has-error" ng-messages="operationForm.riskPercentage.$error">
+                                    <span class="help-block" ng-message="required">This field is required</span>
+                                </div>
                                 <div class="form-group">
-                                    <input type="text" value="" required name="riskPercentage" ng-model="currentPattern.riskPercentage" class="form-control">
+                                    <input type="number" value="" required name="riskPercentage" ng-model="currentPattern.riskPercentage" class="form-control">
                                 </div>
                             </div>
                             <button name="clean" ng-click="cleanPattern()" class="btn btn-warning pull-right">Clean Current Pattern</button>
                         </div>
-
-                        
 
                         <div class="row">
                             <div class="col-lg-4 col-sm-4">
@@ -195,9 +209,16 @@
                             </div>
 
                             <div class="col-lg-6 col-sm-6">
-                                <h3>General Comments</h3>
+                                <h3>General Comments <em class="required">*</em></h3>
+                                <div class="has-error" ng-messages="operationForm.generalComments.$error">
+                                    <span class="help-block" ng-message="required">This field is required</span>
+                                </div>
                                 <div class="input-group9">
-                                    <textarea class="form-control" cols="10" rows="5" ng-model="currentPattern.generalComments"></textarea>
+                                    <textarea class="form-control" 
+                                        name="generalComments"
+                                        required cols="10" rows="5"
+                                        ng-model="currentPattern.generalComments">
+                                     </textarea>
                                 </div>
                             </div>
                         </div>
