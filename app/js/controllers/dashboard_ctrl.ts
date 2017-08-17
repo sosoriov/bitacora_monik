@@ -9,7 +9,7 @@ var config = {
   apiKey: "AIzaSyCxIOPJmGcrftfSWrvoUDrD1BqAuxAxYZ8",
   authDomain: "monik-45103.firebaseapp.com",
   databaseURL: "https://monik-45103.firebaseio.com",
-  storageBucket: "monik-45103.appspot.com"
+  storageBucket: "gs://monik-45103.appspot.com"
 };
 var fapp = firebase.initializeApp(config);
 
@@ -18,8 +18,9 @@ angular.module("app").controller("DashboardCtrl", [
   "$route",
   "$firebaseObject",
   "$firebaseArray",
+  "$firebaseStorage",
   "NgTableParams",
-  function($scope, $route, $firebaseObject, $firebaseArray, NgTableParams) {
+  function($scope, $route, $firebaseObject, $firebaseArray, $firebaseStorage, NgTableParams) {
     $scope.patterns = {};
     $scope.data = {};
     $scope.formData = {};
@@ -101,7 +102,6 @@ angular.module("app").controller("DashboardCtrl", [
 
     function getPatternNames() {
       _.forEach($scope.patternsData, function(pattern) {
-        console.log("pattern    ", pattern);
 
         var tmpPattern = _.pick(pattern, "name");
         // adding the pattern to the scope
@@ -689,5 +689,99 @@ angular.module("app").controller("DashboardCtrl", [
         });
       });
     }
+
+    // Points to the root reference
+    // var storageRef = firebase.storage().ref('myFiles');
+    // var storage = $firebaseStorage(storageRef);
+    $scope.fileToUpload = null;
+    $scope.imgReferences = [];
+    $scope.onChange = function (fileList) {
+       console.log(fileList)
+      // $scope.fileToUpload = fileList[0];
+
+      for (var index = 0; index < fileList.length; index++) {
+
+        var fileName = fileList[index]['name'];
+        var myRef = `myFiles/${fileName}`;
+        console.log(myRef);
+        
+        var newImgRef = firebase.storage().ref(myRef);
+        var storage = $firebaseStorage(newImgRef);
+        $scope.imgReferences.push(newImgRef);
+        var uploadTask = storage.$put(fileList[index]);
+        
+      }
+      
+
+
+
+    };
+
+    // var file = // get a file from the template (see Retrieving files from template section below)
+
+    // <img firebase-src="userProfiles/physicsmarie" />
+
+    // var img = firebase.storage().ref().child('images');
+    // $scope.imgs = $firebaseArray(imagesRef);
+    // var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
+    // $scope.uploadFile = function() {
+    //   var sFileName = $("#nameImg").val();
+    //   if (sFileName.length > 0) {
+    //     var blnValid = false;
+    //     for (var j = 0; j < _validFileExtensions.length; j++) {
+    //       var sCurExtension = _validFileExtensions[j];
+    //       if (
+    //         sFileName
+    //           .substr(
+    //             sFileName.length - sCurExtension.length,
+    //             sCurExtension.length
+    //           )
+    //           .toLowerCase() == sCurExtension.toLowerCase()
+    //       ) {
+    //         blnValid = true;
+    //         var filesSelected = document.getElementById("nameImg").files;
+    //         if (filesSelected.length > 0) {
+    //           var fileToLoad = filesSelected[0];
+
+    //           var fileReader = new FileReader();
+
+    //           fileReader.onload = function(fileLoadedEvent) {
+    //             var textAreaFileContents = document.getElementById(
+    //               "textAreaFileContents"
+    //             );
+
+    //             $scope.imgs.$add({
+    //               date: Firebase.ServerValue.TIMESTAMP,
+    //               base64: fileLoadedEvent.target.result
+    //             });
+    //           };
+
+    //           fileReader.readAsDataURL(fileToLoad);
+    //         }
+    //         break;
+    //       }
+    //     }
+
+    //     if (!blnValid) {
+    //       alert("File is not valid");
+    //       return false;
+    //     }
+    //   }
+
+    //   return true;
+    // };
+
+    // $scope.deleteimg = function(imgid) {
+    //   var r = confirm("Do you want to remove this image ?");
+    //   if (r == true) {
+    //     $scope.imgs.forEach(function(childSnapshot) {
+    //       if (childSnapshot.$id == imgid) {
+    //         $scope.imgs.$remove(childSnapshot).then(function(ref) {
+    //           ref.key() === childSnapshot.$id; // true
+    //         });
+    //       }
+    //     });
+    //   }
+    // };
   }
 ]);
