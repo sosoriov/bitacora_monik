@@ -15,10 +15,11 @@ var fapp = firebase.initializeApp(config);
 
 angular.module("app").controller("DashboardCtrl", [
   "$scope",
+  "$route",
   "$firebaseObject",
   "$firebaseArray",
   "NgTableParams",
-  function($scope, $firebaseObject, $firebaseArray, NgTableParams) {
+  function($scope, $route, $firebaseObject, $firebaseArray, NgTableParams) {
     $scope.patterns = {};
     $scope.data = {};
     $scope.formData = {};
@@ -53,6 +54,12 @@ angular.module("app").controller("DashboardCtrl", [
       $scope.currentAdhesion = {};
       // by default assign compra as initial trade
       $scope.currentPattern.tradeName = "compra";
+
+      debugger
+      $scope.currentPattern.generalComments = "";
+      $scope.currentPattern.selectedPair = "";
+      $scope.currentPattern.selectedTimeframe = "";
+      $scope.currentPattern.riskPercentage = "";
     }
 
     initCurrentStates();
@@ -309,7 +316,9 @@ angular.module("app").controller("DashboardCtrl", [
         updateMyTradesInfo();
 
         alertify.success("Your data has been saved.");
-        initCurrentStates();
+
+        $route.reload();
+        // initCurrentStates();
 
         _.map($scope.validationsData, (i, k) => {
           if (!_.isUndefined(i["value"])) {
@@ -579,8 +588,7 @@ angular.module("app").controller("DashboardCtrl", [
       $scope.currentPattern.operationId = operationId;
       $scope.currentPattern.selectedTrade = operationInfo["trade"]["$id"];
       $scope.currentPattern.selectedPair = operationInfo["pair"]["$id"];
-      $scope.currentPattern.selectedTimeframe =
-        operationInfo["timeframes"]["$id"];
+      $scope.currentPattern.selectedTimeframe = operationInfo["timeframes"]["$id"];
       $scope.currentPattern.riskPercentage = operationInfo["risk"];
       $scope.currentPattern.generalComments = operationInfo["comments"];
       $scope.getSelectedPatternName(operationInfo["trade"]["$id"]);
