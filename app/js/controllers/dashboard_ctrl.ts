@@ -363,56 +363,80 @@ angular.module("app").controller("DashboardCtrl", [
     }
 
     // loading data asyncronously from Firebase
+    var itemsFromDb = [];
+    var readListener;
     patternsObj.$loaded().then(function(patternsData) {
       $scope.patternsData = patternsData;
       getPatternNames();
 
       $scope.displayDataLoader = false;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
     tradesObj.$loaded().then(function(trades) {
       $scope.tradesData = trades;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
     validationObj.$loaded().then(function(validations) {
       $scope.validationsData = validations;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
     confirmationsObj.$loaded().then(function(confirmations) {
       $scope.confirmationsData = confirmations;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
     targetObj.$loaded().then(function(targets) {
       $scope.targetsData = targets;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
     zonesObj.$loaded().then(function(zones) {
       $scope.zonesData = zones;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
     probabilitiesObj.$loaded().then(function(prob) {
       $scope.probData = prob;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
     stopLossObj.$loaded().then(function(stop) {
       $scope.stopLossData = stop;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
     trailingStopLossObj.$loaded().then(function(stop) {
       $scope.trailingStopLossData = stop;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
     adhesionObj.$loaded().then(function(adhesion) {
       $scope.adhesionData = adhesion;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
     pairsObj.$loaded().then(function(pairsData) {
       $scope.pairsData = pairsData;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
     timeFrameObj.$loaded().then(function(timeFrameData) {
       $scope.timeFrameData = timeFrameData;
+      readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
+
+    $scope.$on("getting_data", function(event, data) {
+      // all items have been read
+      if (itemsFromDb.length == 12) {
+        updateMyTradesInfo();
+      }
+    });
+
+    // $scope $destroy
+    $scope.$on("$destroy", readListener);
 
     /**
        * Transform Ids into human readable information
@@ -541,8 +565,6 @@ angular.module("app").controller("DashboardCtrl", [
         });
       });
     }
-
-    updateMyTradesInfo();
 
     $scope.editOperation = function(operationId, patternId) {
       console.log("operationId", operationId);
