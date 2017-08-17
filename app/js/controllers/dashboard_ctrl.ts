@@ -369,7 +369,6 @@ angular.module("app").controller("DashboardCtrl", [
       $scope.patternsData = patternsData;
       getPatternNames();
 
-      $scope.displayDataLoader = false;
       readListener = $scope.$emit("getting_data", itemsFromDb.push(true));
     });
 
@@ -432,6 +431,7 @@ angular.module("app").controller("DashboardCtrl", [
       // all items have been read
       if (itemsFromDb.length == 12) {
         updateMyTradesInfo();
+        $scope.displayDataLoader = false;
       }
     });
 
@@ -536,7 +536,6 @@ angular.module("app").controller("DashboardCtrl", [
           var timeframe = findTimeframe(i["timeframes"]);
           var pair = findPair(i["pair"]);
 
-          console.log("this iss thssss", pair);
           return {
             $id: i["$id"],
             validations: customVal,
@@ -572,8 +571,6 @@ angular.module("app").controller("DashboardCtrl", [
 
       $scope.getAllPatternInfo(patternId);
 
-      console.log($scope.myTradesData);
-
       var operationInfo = findOperation(operationId);
       console.log(operationInfo);
 
@@ -581,8 +578,14 @@ angular.module("app").controller("DashboardCtrl", [
       findPatternTrades(patternId);
       $scope.currentPattern.operationId = operationId;
       $scope.currentPattern.selectedTrade = operationInfo["trade"]["$id"];
+      $scope.currentPattern.selectedPair = operationInfo["pair"]["$id"];
+      $scope.currentPattern.selectedTimeframe =
+        operationInfo["timeframes"]["$id"];
+      $scope.currentPattern.riskPercentage = operationInfo["risk"];
+      $scope.currentPattern.generalComments = operationInfo["comments"];
       $scope.getSelectedPatternName(operationInfo["trade"]["$id"]);
 
+      // selectPair(operationInfo["pair"]);
       selectValidations(operationInfo["validations"]);
       selectConfirmations(operationInfo["confirmations"]);
       selectZones(operationInfo["zones"]);
