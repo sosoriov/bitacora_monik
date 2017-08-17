@@ -55,7 +55,6 @@ angular.module("app").controller("DashboardCtrl", [
       // by default assign compra as initial trade
       $scope.currentPattern.tradeName = "compra";
 
-      debugger
       $scope.currentPattern.generalComments = "";
       $scope.currentPattern.selectedPair = "";
       $scope.currentPattern.selectedTimeframe = "";
@@ -279,7 +278,6 @@ angular.module("app").controller("DashboardCtrl", [
       var stopLossPips = $scope.currentPattern["stopLossPips"] || 0;
       var targetPips = $scope.currentPattern["targetPips"] || 0;
 
-      debugger;
       console.log("stop lossss", stopLoss);
 
       var finalData = {
@@ -588,9 +586,12 @@ angular.module("app").controller("DashboardCtrl", [
       $scope.currentPattern.operationId = operationId;
       $scope.currentPattern.selectedTrade = operationInfo["trade"]["$id"];
       $scope.currentPattern.selectedPair = operationInfo["pair"]["$id"];
-      $scope.currentPattern.selectedTimeframe = operationInfo["timeframes"]["$id"];
+      $scope.currentPattern.selectedTimeframe =
+        operationInfo["timeframes"]["$id"];
       $scope.currentPattern.riskPercentage = operationInfo["risk"];
       $scope.currentPattern.generalComments = operationInfo["comments"];
+      $scope.currentPattern.stopLossPips = operationInfo["stop_loss_pips"];
+      $scope.currentPattern.targetPips = operationInfo["target_pips"];
       $scope.getSelectedPatternName(operationInfo["trade"]["$id"]);
 
       // selectPair(operationInfo["pair"]);
