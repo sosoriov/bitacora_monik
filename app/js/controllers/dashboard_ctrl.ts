@@ -693,7 +693,7 @@ angular.module("app").controller("DashboardCtrl", [
     // Points to the root reference
     // var storageRef = firebase.storage().ref('myFiles');
     // var storage = $firebaseStorage(storageRef);
-    $scope.fileToUpload = null;
+    $scope.fileToUpload = [];
     $scope.imgReferences = [];
     $scope.onChange = function (fileList) {
        console.log(fileList)
@@ -708,6 +708,10 @@ angular.module("app").controller("DashboardCtrl", [
         var newImgRef = firebase.storage().ref(myRef);
         var storage = $firebaseStorage(newImgRef);
         $scope.imgReferences.push(newImgRef);
+
+
+        $scope.fileToUpload.push(fileList[index]); 
+
         var uploadTask = storage.$put(fileList[index]);
         
       }
