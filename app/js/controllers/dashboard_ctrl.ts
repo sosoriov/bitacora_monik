@@ -105,7 +105,9 @@ angular.module("app").controller("DashboardCtrl", [
 
         var tmpPattern = _.pick(pattern, "name");
         // adding the pattern to the scope
-        $scope.patterns[pattern["$id"]] = tmpPattern["name"];
+        if(pattern.display) {
+          $scope.patterns[pattern["$id"]] = tmpPattern["name"];
+        }
       });
     }
 
