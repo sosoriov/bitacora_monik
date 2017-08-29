@@ -33,3 +33,11 @@ hr {
 span.help-block {
     font-size: 13px;
 }
+
+.modal-dialog.modal-lg {
+    width: 85%;
+}
+
+.modal-content {
+    padding: 5px;
+}

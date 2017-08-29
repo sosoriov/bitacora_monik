@@ -9,6 +9,7 @@
     "files":[
       "./app/js/app.ts",
       "./app/js/controllers/dashboard_ctrl.ts",
+      "./app/js/controllers/trade_ctrl.ts",
       "./typings/tsd.d.ts"
     ],
     "exclude": [

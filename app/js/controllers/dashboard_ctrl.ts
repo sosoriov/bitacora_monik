@@ -9,7 +9,7 @@ var config = {
   apiKey: "AIzaSyCxIOPJmGcrftfSWrvoUDrD1BqAuxAxYZ8",
   authDomain: "monik-45103.firebaseapp.com",
   databaseURL: "https://monik-45103.firebaseio.com",
-  storageBucket: "monik-45103.appspot.com"
+  storageBucket: "gs://monik-45103.appspot.com"
 };
 var fapp = firebase.initializeApp(config);
 
@@ -18,8 +18,20 @@ angular.module("app").controller("DashboardCtrl", [
   "$route",
   "$firebaseObject",
   "$firebaseArray",
+  "$firebaseStorage",
+  "$uibModal",
+  "$document",
   "NgTableParams",
-  function($scope, $route, $firebaseObject, $firebaseArray, NgTableParams) {
+  function(
+    $scope,
+    $route,
+    $firebaseObject,
+    $firebaseArray,
+    $firebaseStorage,
+    $uibModal,
+    $document,
+    NgTableParams
+  ) {
     $scope.patterns = {};
     $scope.data = {};
     $scope.formData = {};
@@ -101,8 +113,6 @@ angular.module("app").controller("DashboardCtrl", [
 
     function getPatternNames() {
       _.forEach($scope.patternsData, function(pattern) {
-        console.log("pattern    ", pattern);
-
         var tmpPattern = _.pick(pattern, "name");
         // adding the pattern to the scope
         if(pattern.display) {
@@ -302,10 +312,18 @@ angular.module("app").controller("DashboardCtrl", [
         target_pips: targetPips
       };
 
+      debugger;
+
       try {
         if (_.isUndefined($scope.currentPattern.operationId)) {
           // saving into the database
-          myTradesRef.push(finalData);
+          var trResult = myTradesRef.push(finalData);
+          var insertedId = trResult.getKey();
+          uploadImgsFirebase(insertedId, finalData);
+          // var updatingFinalTrade = {};
+          // finalData['images'] = $scope.refToImagesUploaded;
+          // updatingFinalTrade[insertedId] = finalData;
+          // myTradesRef.update(updateMyTradesInfo);
         } else {
           // update existing
           var updates = {};
@@ -558,6 +576,7 @@ angular.module("app").controller("DashboardCtrl", [
             pattern: patternInfo,
             trade: tradeInfo,
             comments: i["comments"],
+            images: i["images"],
             risk: i["risk"],
             pair: pair,
             timeframes: timeframe,
@@ -582,6 +601,8 @@ angular.module("app").controller("DashboardCtrl", [
 
       var operationInfo = findOperation(operationId);
       console.log(operationInfo);
+
+      $scope.refToImagesUploaded = operationInfo["images"];
 
       $scope.formData.selectedPattern = patternId;
       findPatternTrades(patternId);
@@ -691,5 +712,220 @@ angular.module("app").controller("DashboardCtrl", [
         });
       });
     }
+
+    // Points to the root reference
+    // var storageRef = firebase.storage().ref('myFiles');
+    // var storage = $firebaseStorage(storageRef);
+    $scope.filesToUpload = [];
+    $scope.imgReferences = [];
+    $scope.fileNamesToUpload = [];
+    $scope.onChange = function(fileList) {
+      $scope.filesToUpload = fileList;
+      for (var index = 0; index < $scope.filesToUpload.length; index++) {
+        var fileName = $scope.filesToUpload[index]["name"];
+        $scope.fileNamesToUpload.push(fileName);
+      }
+
+      $scope.$apply();
+    };
+
+    var refToImagesUploaded = [];
+    function uploadImgsFirebase(fbTradesRef, tradeData) {
+      if (fbTradesRef === undefined) {
+        return;
+      }
+
+      for (var index = 0; index < $scope.filesToUpload.length; index++) {
+        var fileName = $scope.filesToUpload[index]["name"];
+        var myRef = `${fbTradesRef}/${fileName}`;
+
+        // $scope.fileToUpload.push($scope.filesToUpload[index]);
+
+        // if fila has not been removed
+        if (_.intersection([fileName], $scope.fileNamesToUpload).length > 0) {
+          var newImgRef = firebase.storage().ref(myRef);
+          var storage = $firebaseStorage(newImgRef);
+          $scope.imgReferences.push(newImgRef);
+          var uploadTask = storage.$put($scope.filesToUpload[index]);
+          refToImagesUploaded.push(myRef);
+        }
+      }
+      var updateMyTradesInfo = {};
+      updateMyTradesInfo[fbTradesRef] = tradeData;
+      updateMyTradesInfo[fbTradesRef]["images"] = refToImagesUploaded;
+      myTradesRef.update(updateMyTradesInfo);
+    }
+
+    $scope.removeImageToUpload = function($event, index) {
+      console.log("item.......", index);
+      $event.stopPropagation();
+      debugger;
+
+      if (index > -1) {
+        // $scope.filesToUpload.splice(index, 1);
+        $scope.fileNamesToUpload.splice(index, 1);
+      }
+    };
+
+    /**
+         * edit expenses 
+         * 
+         * @param {any} size
+         * @param {any} parentSelector
+         */
+    $scope.showTradeSummary = function(
+      size,
+      parentSelector,
+      operationId,
+      patternId
+    ) {
+      var parentElem = parentSelector
+        ? angular.element(
+            $document[0].querySelector(".modal-demo " + parentSelector)
+          )
+        : undefined;
+
+      // $scope.getAllPatternInfo(patternId);
+
+      var operationInfo = findOperation(operationId);
+      // console.log(operationInfo);
+
+      $scope.refToImagesUploaded = operationInfo["images"];
+
+      // $scope.formData.selectedPattern = patternId;
+      // findPatternTrades(patternId);
+      // $scope.currentPattern.operationId = operationId;
+      // $scope.currentPattern.selectedTrade = operationInfo["trade"]["$id"];
+      // $scope.currentPattern.selectedPair = operationInfo["pair"]["$id"];
+      // $scope.currentPattern.selectedTimeframe =
+      //   operationInfo["timeframes"]["$id"];
+      // $scope.currentPattern.riskPercentage = operationInfo["risk"];
+      // $scope.currentPattern.generalComments = operationInfo["comments"];
+      // $scope.currentPattern.stopLossPips = operationInfo["stop_loss_pips"];
+      // $scope.currentPattern.targetPips = operationInfo["target_pips"];
+
+      var currentSelectedTrade = {
+        patternId: patternId,
+        operationId: operationId,
+        selectedTrade : operationInfo["trade"]["label"],
+        selectedPair: operationInfo["pair"]["name"],
+        selectedTimeframe: operationInfo["timeframes"]["name"],
+        riskPercentage : operationInfo["risk"],
+        generalComments : operationInfo["comments"],
+        stopLossPips : operationInfo["stop_loss_pips"],
+        targetPips : operationInfo["target_pips"],
+        images: operationInfo["images"]
+      }
+
+      var modalData = {
+        trade: operationInfo
+      };
+
+      var modalInstance = $uibModal.open({
+        animation: true,
+        ariaLabelledBy: "modal-title",
+        ariaDescribedBy: "modal-body",
+        templateUrl: "views/partials/trade_summary.html",
+        controller: "TradeCtrl",
+        controllerAs: "$scope",
+        backdrop: "static",
+        size: size,
+        appendTo: parentElem,
+        resolve: {
+          modalData: function() {
+            return modalData;
+          }
+        }
+      });
+
+      modalInstance.result.then(
+        function(modalData) {
+          // $scope.modalData = modalData;
+          // $scope.data = nuxeoData.getData()
+          // getBudgetWorkpackageList()
+        },
+        function() {
+          console.info("Modal dismissed at: " + new Date());
+        }
+      );
+    };
+
+    // reading images:
+    // var newImgRef = firebase.storage().ref('-KsYWkNco3DhIpdUvyUq/');
+    // debugger
+    // // var storage = $firebaseStorage(newImgRef);
+    // newImgRef.getDownloadURL().then(function(url) {
+    //   console.log(url);
+    // });
+
+    // var currentImages = $firebaseArray(newImgRef)
+    // console.log("c images ----> ", currentImages);
+
+    // var file = // get a file from the template (see Retrieving files from template section below)
+
+    // <img firebase-src="userProfiles/physicsmarie" />
+
+    // var img = firebase.storage().ref().child('images');
+    // $scope.imgs = $firebaseArray(imagesRef);
+    // var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
+    // $scope.uploadFile = function() {
+    //   var sFileName = $("#nameImg").val();
+    //   if (sFileName.length > 0) {
+    //     var blnValid = false;
+    //     for (var j = 0; j < _validFileExtensions.length; j++) {
+    //       var sCurExtension = _validFileExtensions[j];
+    //       if (
+    //         sFileName
+    //           .substr(
+    //             sFileName.length - sCurExtension.length,
+    //             sCurExtension.length
+    //           )
+    //           .toLowerCase() == sCurExtension.toLowerCase()
+    //       ) {
+    //         blnValid = true;
+    //         var filesSelected = document.getElementById("nameImg").files;
+    //         if (filesSelected.length > 0) {
+    //           var fileToLoad = filesSelected[0];
+
+    //           var fileReader = new FileReader();
+
+    //           fileReader.onload = function(fileLoadedEvent) {
+    //             var textAreaFileContents = document.getElementById(
+    //               "textAreaFileContents"
+    //             );
+
+    //             $scope.imgs.$add({
+    //               date: Firebase.ServerValue.TIMESTAMP,
+    //               base64: fileLoadedEvent.target.result
+    //             });
+    //           };
+
+    //           fileReader.readAsDataURL(fileToLoad);
+    //         }
+    //         break;
+    //       }
+    //     }
+
+    //     if (!blnValid) {
+    //       alert("File is not valid");
+    //       return false;
+    //     }
+    //   }
+
+    //   return true;
+    // };
+
+    // $scope.deleteimg = function(imgid) {
+    //   var r = confirm("Do you want to remove this image ?");
+    //   if (r == true) {
+    //     $scope.imgs.forEach(function(childSnapshot) {
+    //       if (childSnapshot.$id == imgid) {
+    //         $scope.imgs.$remove(childSnapshot).then(function(ref) {
+    //           ref.key() === childSnapshot.$id; // true
+    //         });
+    //       }
+    //     });
+    //   }
+    // };
   }
 ]);
