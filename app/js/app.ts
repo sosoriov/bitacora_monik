@@ -48,4 +48,5 @@ function FileUploadDirective() {
 // import "./template_assets/core.ts";
 // import "./template_assets/site.ts";
 import "./controllers/dashboard_ctrl.ts";
+import "./controllers/trade_ctrl.ts";
 // import "./controllers/runs_dashboard_ctrl.ts";

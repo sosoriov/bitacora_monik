@@ -1,0 +1,127 @@
+<div class="modal-body" id="modal-body">
+    <div class="col-md-6">
+
+    <button type="button" ng-click="cancel()" class="btn btn-sm btn-icon btn-round">
+            <i class="icon wb-arrow-shrink" aria-hidden="true"></i>
+        </button>
+    <form class="form-inline">
+        <div class="row">
+            <div class="form-group">
+                <label class="control-label" for="inputInlineUsername"><strong>Session</strong></label>
+                <span>Test text</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-5 col-md-5 ">
+                <label class="control-label" for="inputInlinePassword"><strong>Date</strong></label>
+                <span>{{ modalData.trade.trade_date | date }}</span>
+            </div>
+            <div class="form-group col-sm-5 col-md-5">
+                <label class="control-label" for="inputInlinePassword"><strong>Hour</strong></label>
+                <span>{{ modalData.trade.trade_date | date: 'hh:mm:ss' }}</span>
+            </div>
+        </div>
+
+        <hr class="clearing" />
+
+        <div class="row">
+            <div class="form-group col-sm-3 col-md-3 ">
+                    <label class="control-label" for="inputInlinePassword"><strong>Trade symbol</strong></label>
+                    <span>{{ modalData.trade.pair.name }}</span>
+                </div>
+            <div class="form-group col-sm-3 col-md-3 ">
+                <label class="control-label" for="inputInlinePassword"><strong>Trade position</strong></label>
+                <span>{{ modalData.trade.trade.label}}</span>
+            </div>
+            <div class="form-group col-sm-3 col-md-3">
+                <label class="control-label" for="inputInlinePassword"><strong>Time Frame</strong></label>
+                <span>{{ modalData.trade.timeframes.name }}</span>
+            </div>
+        </div>
+
+        <hr class="clearing" />
+
+        <div class="row">
+            <div class="form-group col-sm-3 col-md-3 ">
+                    <label class="control-label" for="inputInlinePassword"><strong>% risk</strong></label>
+                    <span>{{ modalData.trade.risk }}</span>
+                </div>
+            <div class="form-group col-sm-3 col-md-3 ">
+                <label class="control-label" for="inputInlinePassword"><strong>Stop loss</strong></label>
+                <span>{{ modalData.trade.stop_loss_pips }}</span>
+            </div>
+            <div class="form-group col-sm-3 col-md-3">
+                <label class="control-label" for="inputInlinePassword"><strong>Target</strong></label>
+                <span>{{ modalData.trade.target_pips}}</span>
+            </div>
+        </div>
+
+        <hr class="clearing" />
+
+        <div class="row">
+            <h3>Pattern</h3>
+            <div ng-if="modalData.trade.validations.length > 0">
+                <h4>Validations</h4>
+                    <ul class="list-inline">
+                    <li ng-repeat="validation in modalData.trade.validations">
+                        {{ validation.label }}   
+                    </li>
+                </ul>
+                
+            </div>
+
+            <div ng-if="modalData.trade.confirmations.length > 0">
+                <h4>Confirmation</h4>
+                <ul class="list-inline" >
+                    <li ng-repeat="confirmation in modalData.trade.confirmations">
+                        {{ confirmation.label }}   
+                    </li>
+                </ul>
+            </div>
+
+            <div ng-if="modalData.trade.zones.length > 0">
+                <h4>Zones</h4>
+                <ul class="list-inline" >
+                    <li ng-repeat="zone in modalData.trade.zones">
+                        {{ zone.label }}   
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <hr class="clearing" />
+
+        <div ng-if="modalData.trade.probabilities.length > 0" class="row">
+            <h3>Probabilities</h3>
+            <ul class="list-icons" ng-repeat="prob in modalData.trade.probabilities">
+                <li>
+                    <i class="wb-check" aria-hidden="true"></i>
+                    {{ prob.label }}   
+                    <span class="rig" ng-if="prob.prob_comments">: {{ prob.prob_comments }}</span>
+                </li>
+            </ul>
+        </div>
+
+        <hr class="clearing" />
+
+        <div class="row">
+            <h3>General comments</h3>
+            <p>{{ modalData.trade.comments }} </p>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+
+        <div class="row trade-images">
+            <div ng-repeat="refs in modalData.trade.images">
+                <img class="img-responsive img-rounded img-bordered img-bordered-default" firebase-src="{{ refs }}" />
+            </div>
+        </div>
+        </div>
+
+    </form>
+</div>
+
+
+<div class="modal-footer">
+</div>
