@@ -35,9 +35,15 @@ span.help-block {
 }
 
 .modal-dialog.modal-lg {
-    width: 85%;
+    width: 90%;
 }
 
 .modal-content {
     padding: 5px;
+}
+
+.trade-images img {
+    float: left;
+    width: 530px;
+    margin: 3px;
 }
