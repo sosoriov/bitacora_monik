@@ -44,11 +44,28 @@ span.help-block {
 
 .trade-images img {
     float: left;
-    width: 920px;
-    height: 330px;
+    width: 1025px;
+    /* height: 330px; */
+    
     margin: 2px;
 }
 
 .blue-font {
     color: #62a8ea;
+}
+
+.modal-dialog, .modal.in .modal-dialog {
+    width: 98%;
+}
+
+.modal-content { 
+    max-height: 1100px
+}
+
+.imgLargeSize{
+    max-height: 530px;
+}
+
+.imgSmallSize {
+    max-height: 330px;
 }

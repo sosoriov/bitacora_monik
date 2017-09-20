@@ -116,7 +116,9 @@
 
         <div class="row trade-images">
             <div ng-repeat="refs in modalData.trade.images">
-                <img class="img-responsive img-rounded img-bordered img-bordered-default" firebase-src="{{ refs }}" />
+                <img ng-class="{imgSmallSize: modalData.trade.images.length > 2, imgLargeSize: modalData.trade.images.length < 3}"
+                     class="img-responsive img-rounded img-bordered img-bordered-default"
+                     firebase-src="{{ refs }}" />
             </div>
         </div>
     </div>
