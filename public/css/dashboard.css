@@ -44,6 +44,11 @@ span.help-block {
 
 .trade-images img {
     float: left;
-    width: 700px;
+    width: 920px;
+    height: 330px;
     margin: 2px;
+}
+
+.blue-font {
+    color: #62a8ea;
 }

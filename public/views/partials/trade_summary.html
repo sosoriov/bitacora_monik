@@ -25,11 +25,11 @@
 
             <div class="row">
                 <div class="form-group col-sm-3 col-md-3 ">
-                    <label class="control-label" for="inputInlinePassword"><strong>Trade symbol</strong></label>
+                    <label class="control-label" for="inputInlinePassword"><strong>Trade symbol</strong></label><br>
                     <span>{{ modalData.trade.pair.name }}</span>
                 </div>
                 <div class="form-group col-sm-3 col-md-3 ">
-                    <label class="control-label" for="inputInlinePassword"><strong>Trade position</strong></label>
+                    <label class="control-label" for="inputInlinePassword"><strong>Trade position</strong></label><br>
                     <span>{{ modalData.trade.trade.label}}</span>
                 </div>
                 <div class="form-group col-sm-3 col-md-3">
@@ -58,7 +58,7 @@
             <hr class="clearing" />
 
             <div class="row">
-                <h3>Pattern</h3>
+                <h3 class="blue-font">Pattern</h3>
                 <div ng-if="modalData.trade.validations.length > 0">
                     <h4>Validations</h4>
                     <ul class="list-inline">
@@ -94,11 +94,11 @@
             <hr class="clearing" />
 
             <div ng-if="modalData.trade.probabilities.length > 0" class="row">
-                <h3>Probabilities</h3>
+                <h3 class="blue-font">Probabilities</h3>
                 <ul class="list-icons" ng-repeat="prob in modalData.trade.probabilities">
                     <li>
                         <i class="wb-check" aria-hidden="true"></i> {{ prob.label }}
-                        <span class="rig" ng-if="prob.prob_comments">: {{ prob.prob_comments }}</span>
+                        <span class="rig" ng-if="prob.prob_comments">: <em>{{ prob.prob_comments }}</em></span>
                     </li>
                 </ul>
             </div>
@@ -106,7 +106,7 @@
             <hr class="clearing" />
 
             <div class="row">
-                <h3>General comments</h3>
+                <h3 class="blue-font">General comments</h3>
                 <p>{{ modalData.trade.comments }} </p>
             </div>
         </form>
